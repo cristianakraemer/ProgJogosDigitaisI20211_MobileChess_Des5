@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    //Referência do Unity IDE
     public GameObject chesspiece;
 
-    // Posições e equipe de cada peça de xadrez
+    //Cria a matriz. Posições e equipe de cada peça de xadrez
     private GameObject[,] positions = new GameObject[8, 8];
     private GameObject[] playerBlack = new GameObject[16];
     private GameObject[] playerWhite = new GameObject[16];
 
+    //De quem é a vez
     private string currentPlayer = "white";
 
+    //Fim de jogo
     private bool gameOver = false;
 
     void Start()
@@ -36,8 +39,8 @@ public class GameController : MonoBehaviour
             Create("black_pawn", 3, 6), Create("black_pawn", 4, 6), Create("black_pawn", 5, 6),
             Create("black_pawn", 6, 6), Create("black_pawn", 7, 6) };
 
-        
-        for (int i = 0; i < playerBlack.Length; i++) //Define a posição de todas as peças no quadro
+        //Define a posição de todas as peças no quadro
+        for (int i = 0; i < playerBlack.Length; i++)
         {
             SetPosition(playerBlack[i]);
             SetPosition(playerWhite[i]);
@@ -58,11 +61,14 @@ public class GameController : MonoBehaviour
     public void SetPosition(GameObject obj) //Pega a posição de cada peça
     {
         Chessman cm = obj.GetComponent<Chessman>();
+
+        //Sobrescreve o espaço vazio ou o que quer que esteja lá
         positions[cm.GetXBoard(), cm.GetYBoard()] = obj;
     }
 
     public void SetPositionEmpty(int x, int y)
     {
+        //Define a posição nula
         positions[x, y] = null;
     }
 
@@ -104,6 +110,8 @@ public class GameController : MonoBehaviour
         if (gameOver == true && Input.GetMouseButtonDown(0))
         {
             gameOver = false;
+
+            //Usar o UnityEngine.SceneManagement - Reinicia o jogo carregando a cena novamente
             SceneManager.LoadScene("Game");
         }
     }
@@ -111,6 +119,8 @@ public class GameController : MonoBehaviour
     public void Winner(string playerWinner)
     {
         gameOver = true;
+
+        //Aqui é necessário o UnityEngine.UI (Interface)
         GameObject.FindGameObjectWithTag("WinnerText").GetComponent<Text>().enabled = true;
         GameObject.FindGameObjectWithTag("WinnerText").GetComponent<Text>().text = playerWinner + " is the winner";
 

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Chessman : MonoBehaviour
 {
-    //Referências
+    //Referências aos objetos na cena
     public GameObject controller;
     public GameObject movePlate;
 
-    //Posições
+    //Posições das peças no tabuleiro
     private int xBoard = -1;
     private int yBoard = -1;
 
-    //Variável para acompanhar o jogador "preto" ou "branco"
+    //Variável para rastrear o jogador ao qual pertence: "preto" ou "branco"
     private string player;
 
     //Referências para todos os Sprites
@@ -21,11 +21,13 @@ public class Chessman : MonoBehaviour
 
     public void Activate()
     {
+        //Obter o controlador de jogo (GameController)
         controller = GameObject.FindGameObjectWithTag("GameController");
 
-        //Para pegar a localização instanciada e ajustar a transform
+        //Para pegar a localização instanciada e ajustar a transformação/transform
         SetCoords();
 
+        //Escolhe o Sprite correto com base no seu nome
         switch (this.name)
         {
             case "black_queen": this.GetComponent<SpriteRenderer>().sprite = black_queen; player = "black"; break;
@@ -46,15 +48,19 @@ public class Chessman : MonoBehaviour
 
     public void SetCoords()
     {
+        //Obtem valor do tabuleiro e converte para coordenadas x y
         float x = xBoard;
         float y = yBoard;
 
+        //Ajusta deslocamento variável
         x *= 0.66f;
         y *= 0.66f;
 
+        //Adiciona constantes (pos 0, 0)
         x += -2.3f;
         y += -2.3f;
 
+        //Define os valores reais da unidade
         this.transform.position = new Vector3(x, y, -1.0f);
     }
 
@@ -83,17 +89,21 @@ public class Chessman : MonoBehaviour
         if (!controller.GetComponent<GameController>().IsGameOver() && 
             controller.GetComponent<GameController>().GetCurrentPlayer() == player)
         {
+            //Remove todos os MovePlates relacionados à peça previamente selecionada
             DestroyMovePlates();
+
+            //Cria novos MovePlates
             InitiateMovePlates();
         }
     }
 
     public void DestroyMovePlates()
     {
+        //Destrói os antigos MovePlates
         GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlate");
         for (int i = 0; i < movePlates.Length; i++)
         {
-            Destroy(movePlates[i]);
+            Destroy(movePlates[i]); //Função de destruir assíncrona
         }
     }
 
@@ -228,16 +238,21 @@ public class Chessman : MonoBehaviour
 
     public void MovePlateSpawn(int matrixX, int matrixY)
     {
+        //Obtem valor do tabuleiro e converte para coordenadas x y
         float x = matrixX;
         float y = matrixY;
 
+        //Ajusta deslocamento variável
         x *= 0.66f;
         y *= 0.66f;
 
+        //Adiciona constantes (pos 0, 0)
         x += -2.3f;
         y += -2.3f;
 
+        //Define os valores reais da unidade
         GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
+        
         MovePlate mpScript = mp.GetComponent<MovePlate>();
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);

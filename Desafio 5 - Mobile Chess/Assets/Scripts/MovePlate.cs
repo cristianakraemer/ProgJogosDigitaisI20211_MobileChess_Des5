@@ -34,13 +34,18 @@ public class MovePlate : MonoBehaviour
         controller.GetComponent<GameController>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(), 
             reference.GetComponent<Chessman>().GetYBoard());
 
+        //Move a peça de referência para esta posição
         reference.GetComponent<Chessman>().SetXBoard(matrixX);
         reference.GetComponent<Chessman>().SetYBoard(matrixY);
         reference.GetComponent<Chessman>().SetCoords();
 
+        //Atualiza a matriz
         controller.GetComponent<GameController>().SetPosition(reference);
+
+        //Alterna jogador atual
         controller.GetComponent<GameController>().NextTurn();
 
+        //Destrói as MovePlates (placas de movimento), incluindo a si mesmo
         reference.GetComponent<Chessman>().DestroyMovePlates();
     }
 
