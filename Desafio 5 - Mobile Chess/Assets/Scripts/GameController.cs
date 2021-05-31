@@ -112,7 +112,7 @@ public class GameController : MonoBehaviour
             gameOver = false;
 
             //Usar o UnityEngine.SceneManagement - Reinicia o jogo carregando a cena novamente
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene("MobileChess");
         }
     }
 
